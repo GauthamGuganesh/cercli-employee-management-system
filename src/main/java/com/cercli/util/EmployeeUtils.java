@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public class EmployeeUtils {
 
     /**
+     * Validates the input email using a regularExpression.
      *
      * @param email
      * @throws InvalidEmployeeContactException
@@ -29,9 +30,12 @@ public class EmployeeUtils {
             throw new InvalidEmployeeContactException("Invalid employee email.");
     }
 
+    /**
+     *
+     * @param value
+     * @return A <code>boolean</code> signifying null or emptiness of a string.
+     */
     public static boolean isEmptyString(String value){
-        if(value == null || value.isEmpty()) return true;
-
-        return false;
+        return value == null || value.isEmpty();
     }
 }

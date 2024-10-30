@@ -21,9 +21,7 @@ public class Employee {
     private final String position;
     private final String email;
     private final BigDecimal salary;
-    private final ZonedDateTime createdAt;
-    private final ZonedDateTime modifiedAt;
-
+    private final Instant createdAt;
     /**
      *
      * @param employeeId - Unique employee identifier.
@@ -45,8 +43,7 @@ public class Employee {
         this.position = position;
         this.email = email;
         this.salary = salary;
-        this.createdAt = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("UTC"));
-        this.modifiedAt = null;
+        this.createdAt = Instant.now();
     }
 
     /**
@@ -61,8 +58,7 @@ public class Employee {
         builder.append("position = ").append(position).append(", ");
         builder.append("email = ").append(email).append(", ");
         builder.append("salary = ").append(salary.toString()).append(", ");
-        builder.append("createdAt = ").append(createdAt).append(", ");
-        builder.append("modifiedAt = ").append(modifiedAt).append("]");
+        builder.append("createdAt = ").append(createdAt).append("]");
         return builder.toString();
     }
 
@@ -84,7 +80,7 @@ public class Employee {
      *
      * @param employee - An employee instance to be copied.
      * @return - A new immutable instance of the input employee object.
-     * @throws InvalidEmployeeContactException - Thrown when employee contact details like email, mobile are invalid.
+     * @throws InvalidEmployeeContactException - Thrown when employee contact details like email are invalid.
      */
     public static Employee copyOf(Employee employee) throws InvalidEmployeeContactException {
         if(employee == null)
@@ -94,6 +90,20 @@ public class Employee {
         return new Employee(employee.employeeId, employee.name, employee.position, employee.email, employee.salary);
     }
 
+    /**
+     * <p>
+     * A static fluent-builder class that helps construct the Employee object.
+     * All userInput parameters are assumed to be mandatory without which
+     * building an Employee object will not be possible.
+     * </p>
+     * Implements <code> EmployeeId, EmployeeName, EmployeePosition, EmployeeSalary, EmployeeEmail, EmployeeBuild </code> interfaces.
+     * Each interface returns the type of the next type down the chain.
+     *
+     * <p>
+     * The builder methods throw <code>EmployeeBuilderException</code> - if the input values or null or empty.
+     * <code>InvalidEmployeeContactException</code> - if the employee email is invalid.
+     * </p>
+     */
     public static class EmployeeBuilder implements EmployeeId, EmployeeName, EmployeePosition,
             EmployeeSalary, EmployeeEmail, EmployeeBuild {
 
