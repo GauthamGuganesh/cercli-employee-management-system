@@ -22,15 +22,18 @@ public class EmployeeManagementApplication {
 
         EmployeeDatabaseService databaseService = new EmployeeDatabaseService();
         databaseService.addEmployee(newEmployee, employeeId);
-        System.out.println(databaseService.getEmployee(employeeId));
+        Employee existingEmployee = databaseService.getEmployee(employeeId);
+        System.out.println(existingEmployee);
 
         Thread.sleep(2000);
         Employee updateEmployee = new Employee.EmployeeBuilder()
-                                        .withEmployeeId(employeeId)
+                                        .withEmployeeId(existingEmployee.getEmployeeId())
                                         .havingName("Guganesh")
                                         .workingAs("Lead Software Engineer")
                                         .withSalary(new BigDecimal(20000.00))
-                                        .havingEmailAs("gautham.guganesh@hotmail.com").build();
+                                        .havingEmailAs(existingEmployee.getEmail())
+                                        .withCreatedOn(existingEmployee.getCreatedAt()).build();
+
 
         databaseService.updateEmployee(updateEmployee, employeeId);
         System.out.println(databaseService.getEmployee(employeeId));

@@ -33,6 +33,7 @@ public class EmployeeDatabaseService {
      * @param employeeId
      */
     public void updateEmployee(Employee employee, String employeeId) {
+        employee.setModifiedAt(Instant.now());
         EmployeeDatabase employeeDatabase = EmployeeDatabase.getInstance();
         employeeDatabase.saveOrUpdateEmployee(employeeId, employee);
         employeeDatabase.addChangeLog(new ChangeLog(ChangeLogAction.UPDATE, employee.toString(), Instant.now()));

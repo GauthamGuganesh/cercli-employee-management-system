@@ -22,6 +22,16 @@ public class Employee {
     private final String email;
     private final BigDecimal salary;
     private final Instant createdAt;
+    private Instant modifiedAt;
+    public void setModifiedAt(Instant modifiedAt) { this.modifiedAt = modifiedAt; }
+
+    public String getEmployeeId() { return employeeId; }
+    public String getName(){ return name; }
+    public String getPosition() { return position; }
+    public String getEmail() { return email; }
+    public BigDecimal getSalary() { return salary; }
+    public Instant getCreatedAt() { return createdAt; }
+
     /**
      *
      * @param employeeId - Unique employee identifier.
@@ -37,13 +47,13 @@ public class Employee {
      * across the application. Depending upon the request being served, the appropriate timezone-conversion
      * will be carried out.
      */
-    private Employee(String employeeId, String name, String position, String email, BigDecimal salary) {
+    private Employee(String employeeId, String name, String position, String email, BigDecimal salary, Instant createdOn) {
         this.employeeId = employeeId;
         this.name = name;
         this.position = position;
         this.email = email;
         this.salary = salary;
-        this.createdAt = Instant.now();
+        this.createdAt = (createdOn == null) ? Instant.now() : createdOn;
     }
 
     /**
@@ -58,7 +68,8 @@ public class Employee {
         builder.append("position = ").append(position).append(", ");
         builder.append("email = ").append(email).append(", ");
         builder.append("salary = ").append(salary.toString()).append(", ");
-        builder.append("createdAt = ").append(createdAt).append("]");
+        builder.append("createdAt = ").append(createdAt).append(", ");
+        builder.append("modifiedAt = ").append(modifiedAt).append("]");
         return builder.toString();
     }
 
@@ -72,22 +83,8 @@ public class Employee {
      * @return - A new instance of the employee object created with the provided parameters.
      * @throws InvalidEmployeeContactException - Thrown when contact details like email, mobile ,address are invalid.
      */
-    private static Employee createEmployee(String employeeId, String name, String position, String email, BigDecimal salary) throws InvalidEmployeeContactException {
-        return new Employee(employeeId, name, position, email, salary);
-    }
-
-    /**
-     *
-     * @param employee - An employee instance to be copied.
-     * @return - A new immutable instance of the input employee object.
-     * @throws InvalidEmployeeContactException - Thrown when employee contact details like email are invalid.
-     */
-    public static Employee copyOf(Employee employee) throws InvalidEmployeeContactException {
-        if(employee == null)
-            throw new NullPointerException("Employee object is null. A new copy cannot be created.");
-
-        EmployeeUtils.validateEmail(employee.email);
-        return new Employee(employee.employeeId, employee.name, employee.position, employee.email, employee.salary);
+    private static Employee createEmployee(String employeeId, String name, String position, String email, BigDecimal salary, Instant createdOn) throws InvalidEmployeeContactException {
+        return new Employee(employeeId, name, position, email, salary, createdOn);
     }
 
     /**
@@ -112,14 +109,23 @@ public class Employee {
         private String position;
         private String email;
         private BigDecimal salary;
-
+        private Instant createdOn;
         public EmployeeBuilder() {
 
         }
 
         @Override
         public Employee build() throws InvalidEmployeeContactException {
-            return Employee.createEmployee(employeeId, name, position, email, salary);
+            return Employee.createEmployee(employeeId, name, position, email, salary, createdOn);
+        }
+
+        @Override
+        public EmployeeBuild withCreatedOn(Instant createdOn) throws EmployeeBuilderException {
+            if(createdOn == null)
+                throw new EmployeeBuilderException("CreatedOn cannot be null");
+
+            this.createdOn = createdOn;
+            return this;
         }
 
         @Override
