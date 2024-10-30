@@ -1,6 +1,6 @@
 package com.cercli.util;
 
-import com.cercli.Exception.InvalidEmployeeContactException;
+import com.cercli.exception.InvalidEmployeeContactException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

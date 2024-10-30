@@ -1,4 +1,4 @@
-package com.cercli.Exception;
+package com.cercli.exception;
 
 /**
  * This exception is thrown when an employee email has an invalid format.

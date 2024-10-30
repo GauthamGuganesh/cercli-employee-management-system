@@ -1,7 +1,7 @@
 package com.cercli.builder;
 
-import com.cercli.Exception.EmployeeBuilderException;
-import com.cercli.Exception.InvalidEmployeeContactException;
+import com.cercli.exception.EmployeeBuilderException;
+import com.cercli.exception.InvalidEmployeeContactException;
 import com.cercli.model.Employee;
 
 import java.time.Instant;

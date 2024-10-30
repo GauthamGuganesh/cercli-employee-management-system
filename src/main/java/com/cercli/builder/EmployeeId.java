@@ -1,6 +1,6 @@
 package com.cercli.builder;
 
-import com.cercli.Exception.EmployeeBuilderException;
+import com.cercli.exception.EmployeeBuilderException;
 
 public interface EmployeeId {
 

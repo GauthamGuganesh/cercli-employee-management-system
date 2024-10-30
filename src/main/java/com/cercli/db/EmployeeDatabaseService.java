@@ -1,6 +1,6 @@
 package com.cercli.db;
 
-import com.cercli.Exception.EmployeeNotAvailableException;
+import com.cercli.exception.EmployeeNotAvailableException;
 import com.cercli.model.Employee;
 
 import java.time.Instant;
@@ -19,24 +19,24 @@ public class EmployeeDatabaseService {
     /**
      * Adds an object to the Employee Database and records the action.
      * @param employee
-     * @param employeeId
      */
-    public void addEmployee(Employee employee, String employeeId) {
+    public void addEmployee(Employee employee) {
         EmployeeDatabase employeeDatabase = EmployeeDatabase.getInstance();
-        employeeDatabase.saveOrUpdateEmployee(employeeId, employee);
+        employeeDatabase.saveOrUpdateEmployee(employee);
         employeeDatabase.addChangeLog(new ChangeLog(ChangeLogAction.ADD, employee.toString(), Instant.now()));
     }
 
     /**
      * Updates an existing employee in the database and records the action.
      * @param employee
-     * @param employeeId
      */
-    public void updateEmployee(Employee employee, String employeeId) {
+    public void updateEmployee(Employee employee) throws EmployeeNotAvailableException {
         employee.setModifiedAt(Instant.now());
         EmployeeDatabase employeeDatabase = EmployeeDatabase.getInstance();
-        employeeDatabase.saveOrUpdateEmployee(employeeId, employee);
-        employeeDatabase.addChangeLog(new ChangeLog(ChangeLogAction.UPDATE, employee.toString(), Instant.now()));
+        if(getEmployee(employee.getEmployeeId()) != null) {
+            employeeDatabase.saveOrUpdateEmployee(employee);
+            employeeDatabase.addChangeLog(new ChangeLog(ChangeLogAction.UPDATE, employee.toString(), Instant.now()));
+        }
     }
 
     /**

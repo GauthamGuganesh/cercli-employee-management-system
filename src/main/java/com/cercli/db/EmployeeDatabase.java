@@ -1,6 +1,6 @@
 package com.cercli.db;
 
-import com.cercli.Exception.EmployeeNotAvailableException;
+import com.cercli.exception.EmployeeNotAvailableException;
 import com.cercli.model.Employee;
 
 import java.util.*;
@@ -29,14 +29,12 @@ public class EmployeeDatabase {
 
     /**
      * Saves or updates the employee object against the employeeId in the database.
-     * @param employeeId
      * @param employee
      * @throws IllegalArgumentException when the Employee object or employeeId is null.
      */
-    public synchronized void saveOrUpdateEmployee(String employeeId, Employee employee) throws IllegalArgumentException {
+    public synchronized void saveOrUpdateEmployee(Employee employee) throws IllegalArgumentException {
         if(employee == null) throw new IllegalArgumentException("Employee cannot be null for database save/update ");
-        if(employeeId == null) throw new IllegalArgumentException(("EmployeeId cannot be null for database save/update"));
-        employees.put(employeeId, employee);
+        employees.put(employee.getEmployeeId(), employee);
     }
 
     /**

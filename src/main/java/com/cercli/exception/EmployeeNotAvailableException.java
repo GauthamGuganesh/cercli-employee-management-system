@@ -1,4 +1,4 @@
-package com.cercli.Exception;
+package com.cercli.exception;
 
 /**
  * This exception is thrown when the database is unable to fetch an employee object

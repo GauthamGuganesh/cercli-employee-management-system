@@ -1,14 +1,12 @@
 package com.cercli.model;
 
-import com.cercli.Exception.EmployeeBuilderException;
-import com.cercli.Exception.InvalidEmployeeContactException;
+import com.cercli.exception.EmployeeBuilderException;
+import com.cercli.exception.InvalidEmployeeContactException;
 import com.cercli.builder.*;
 import com.cercli.util.EmployeeUtils;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 /**
  * @author P.Gautham Guganesh
