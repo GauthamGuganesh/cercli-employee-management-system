@@ -71,10 +71,6 @@ public class Employee {
      */
     @Override
     public String toString(){
-         String modifiedAtWithTimeZoneOffset = "";
-        if(modifiedAt != null)  modifiedAtWithTimeZoneOffset = ZonedDateTime.ofInstant(modifiedAt, serverTimeZoneId)
-                                                                              .format(DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMAT));
-
         StringBuilder builder = new StringBuilder();
         builder.append("Employee[employeeId = ").append(employeeId).append(", ");
         builder.append("name = ").append(name).append(", ");
