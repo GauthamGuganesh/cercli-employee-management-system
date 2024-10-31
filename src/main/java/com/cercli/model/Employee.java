@@ -3,10 +3,14 @@ package com.cercli.model;
 import com.cercli.exception.EmployeeBuilderException;
 import com.cercli.exception.InvalidEmployeeContactException;
 import com.cercli.builder.*;
-import com.cercli.util.EmployeeUtils;
+import com.cercli.util.CommonUtils;
+import com.cercli.util.Constants;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author P.Gautham Guganesh
@@ -14,6 +18,7 @@ import java.time.Instant;
  */
 public class Employee {
 
+    private static final ZoneId serverTimeZoneId = CommonUtils.getServerTimeZoneId();
     private final String employeeId;
     private final String name;
     private final String position;
@@ -29,6 +34,13 @@ public class Employee {
     public String getEmail() { return email; }
     public BigDecimal getSalary() { return salary; }
     public Instant getCreatedAt() { return createdAt; }
+    public String getCreatedAtWithTimeZone() {
+        return CommonUtils.getFormattedDateTimeWithTimeZone(createdAt, serverTimeZoneId);
+    }
+    public String getModifiedAtWithTimeZone() {
+        if(modifiedAt != null) return CommonUtils.getFormattedDateTimeWithTimeZone(modifiedAt, serverTimeZoneId);
+        return "";
+    }
 
     /**
      *
@@ -37,7 +49,6 @@ public class Employee {
      * @param position - The position the employee holds in the organisation.
      * @param email - The email provided to contact the employee.
      * @param salary - The salary drawn by the employee
-     * @Return - A new instance of the employee object created with the provided parameters.
      *
      * <br>
      * <br>
@@ -60,14 +71,18 @@ public class Employee {
      */
     @Override
     public String toString(){
+         String modifiedAtWithTimeZoneOffset = "";
+        if(modifiedAt != null)  modifiedAtWithTimeZoneOffset = ZonedDateTime.ofInstant(modifiedAt, serverTimeZoneId)
+                                                                              .format(DateTimeFormatter.ofPattern(Constants.DATE_TIME_FORMAT));
+
         StringBuilder builder = new StringBuilder();
         builder.append("Employee[employeeId = ").append(employeeId).append(", ");
         builder.append("name = ").append(name).append(", ");
         builder.append("position = ").append(position).append(", ");
         builder.append("email = ").append(email).append(", ");
         builder.append("salary = ").append(salary.toString()).append(", ");
-        builder.append("createdAt = ").append(createdAt).append(", ");
-        builder.append("modifiedAt = ").append(modifiedAt).append("]");
+        builder.append("createdAt = ").append(getCreatedAtWithTimeZone()).append(", ");
+        builder.append("modifiedAt = ").append(getModifiedAtWithTimeZone()).append("]");
         return builder.toString();
     }
 
@@ -128,17 +143,17 @@ public class Employee {
 
         @Override
         public EmployeeBuild havingEmailAs(String email) throws EmployeeBuilderException, InvalidEmployeeContactException {
-            if(EmployeeUtils.isEmptyString(email))
+            if(CommonUtils.isEmptyString(email))
                 throw new EmployeeBuilderException("Email cannot be null or empty");
 
-            EmployeeUtils.validateEmail(email);
+            CommonUtils.validateEmail(email);
             this.email = email;
             return this;
         }
 
         @Override
         public EmployeeName withEmployeeId(String employeeId) throws EmployeeBuilderException {
-            if(EmployeeUtils.isEmptyString(employeeId))
+            if(CommonUtils.isEmptyString(employeeId))
                 throw new EmployeeBuilderException("Employee id cannot be null or empty");
             this.employeeId = employeeId;
             return this;
@@ -146,7 +161,7 @@ public class Employee {
 
         @Override
         public EmployeePosition havingName(String name) throws EmployeeBuilderException {
-            if(EmployeeUtils.isEmptyString(name))
+            if(CommonUtils.isEmptyString(name))
                 throw new EmployeeBuilderException("Employee name cannot be null or empty");
             this.name = name;
             return this;
@@ -154,7 +169,7 @@ public class Employee {
 
         @Override
         public EmployeeSalary workingAs(String position) throws EmployeeBuilderException {
-            if(EmployeeUtils.isEmptyString(position))
+            if(CommonUtils.isEmptyString(position))
                 throw new EmployeeBuilderException("Employee position cannot be null or empty");
             this.position = position;
             return this;
