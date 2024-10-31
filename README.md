@@ -7,4 +7,7 @@ It uses an unique identifier to identify each employee record.
 It's a stand-alone java application that can be executed by running the main method in EmployeeManagementApplication.java.
 There are some sample use-cases for reference. Output is dumped to console.
 
+# Problem Solving Case - TimeOff Module
+The solution can be found in the file named "2. Problem-Solving-Case" in this repository.
+
 
