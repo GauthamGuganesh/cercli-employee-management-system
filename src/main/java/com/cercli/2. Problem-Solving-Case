@@ -10,10 +10,12 @@ constraint.
 
 Solution:
 Work-Remotely date-range will need to be modified to accommodate annual-leave.
-    * If(annual_leave_start_date > work_remotely_start_date)
+    * if(annual_leave_start_date between (work_remotely_start_date, work_remotely_end_date))
+
+        If(annual_leave_start_date > work_remotely_start_date)
            split_work_remotely_from_to(fromDate: work_remote_start_date, toDate: annual_leave_start_date - 1);
 
-    * If(annual_leave_end_date < work_remotely_end_date)
+        If(annual_leave_end_date < work_remotely_end_date)
            split_work_remotely_from_to(fromDate: annual_leave_end_date+1, toDate: work_remote_end_date);
 
     * if(annual_leave_start_date < work_remotely_start_date && annual_leave_end_date > work_remotely_end_date)
